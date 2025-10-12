@@ -22,7 +22,8 @@ fn desugar (e: Box<Expr>) -> Box<Expr>
     match *e {
         Op(l, Add, r) => Box::new(Op(desugar(l), Add, desugar(r))),
         Op(l, Sub, r) => Box::new(Op(desugar(l), Sub, desugar(r))),
-        Neg(e) => Box::new(Op(Box::new(Num(0)), Sub, desugar(e))),       
+        //-<expr>->0 - <expr> 이런 느낌인듯? ast 수준에서 해결하기 위해서?
+        Neg(e) => Box::new(Op(Box::new(Num(0)), Sub, desugar(e))),
         Num(n) => Box::new(Num(n)),
     }
 }

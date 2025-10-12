@@ -3,8 +3,11 @@ use crate::ast::{Expr, Opcode};
 
 grammar;
 
-pub Expr: Box<Expr> = { 
-    "(" <l:Expr> <op:ExprOp> <r:Expr> ")" => Box::new(Expr::Op(l, op, r)), 
+//이거 좌측이 문법 구조->러스트(AST) 구조 이런느낌이네, :으로 좌/우 구분하는거고
+    보고 읽을 수 있는 수준으로만 이해하라
+
+pub Expr: Box<Expr> = {
+    "(" <l:Expr> <op:ExprOp> <r:Expr> ")" => Box::new(Expr::Op(l, op, r)),
     <n:Num> => Box::new(Expr::Num(n)),
 };
 
