@@ -1,4 +1,4 @@
-use std::fmt ;
+use std::fmt;
 
 #[derive(Debug, Clone)]
 pub enum Expr {
@@ -25,44 +25,35 @@ Num::= [0-9]+
 
 */
 
-
-
 //pub type ExprBox = Box<Expr> ;
 
 //그냥 표현을 간략하게 하기 위해서, 만든 도우미 함수들 느낌
-pub fn add (l: Box<Expr>, r: Box<Expr>) -> Box<Expr> 
-{
+pub fn add(l: Box<Expr>, r: Box<Expr>) -> Box<Expr> {
     Box::new(Expr::Op(l, Opcode::Add, r))
 }
 
-pub fn sub (l: Box<Expr>, r: Box<Expr>) -> Box<Expr>
-{
+pub fn sub(l: Box<Expr>, r: Box<Expr>) -> Box<Expr> {
     Box::new(Expr::Op(l, Opcode::Sub, r))
 }
 
-pub fn num (n: i32) -> Box<Expr>
-{
+pub fn num(n: i32) -> Box<Expr> {
     Box::new(Expr::Num(n))
 }
 
-
-impl fmt::Display for Expr 
-{
-	fn fmt (&self, f: &mut fmt::Formatter) -> fmt::Result {
-		match self {
-			Expr::Num(n) => write!(f, "{}", n),
-			Expr::Op(l, op, r) => write!(f, "({} {} {})", l, op, r)
-		}
-	}
+impl fmt::Display for Expr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Expr::Num(n) => write!(f, "{}", n),
+            Expr::Op(l, op, r) => write!(f, "({} {} {})", l, op, r),
+        }
+    }
 }
 
-impl fmt::Display for Opcode 
-{
-	fn fmt (&self, f: &mut fmt::Formatter) -> fmt::Result {
-		match self {
-			Opcode::Add => write!(f, "+"),
-			Opcode::Sub => write!(f, "-")
-		}
-	}
+impl fmt::Display for Opcode {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Opcode::Add => write!(f, "+"),
+            Opcode::Sub => write!(f, "-"),
+        }
+    }
 }
-

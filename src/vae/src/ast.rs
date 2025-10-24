@@ -1,58 +1,55 @@
-use std::fmt ;
+use std::fmt;
 
 #[derive(Debug, Clone)]
 pub enum Expr {
     Num(i32),
-    Op(Box<Expr>, Opcode, Box<Expr>),
+    Op(Box<Expr>, Opr, Box<Expr>),
     Val(String, Box<Expr>, Box<Expr>),
-    Ref(String)
+    Use(String),
 }
 
 #[derive(Debug, Copy, Clone)]
-pub enum Opcode {
+pub enum Opr {
     Add,
     Sub,
 }
 
-//#[derive(Debug, Clone)]
-//pub struct Ref(pub String) ;
-
-
-//pub type ExprBox = Box<Expr> ;
-
-pub fn add (l: Box<Expr>, r: Box<Expr>) -> Box<Expr> 
-{
-    Box::new(Expr::Op(l, Opcode::Add, r))
+pub fn add(l: Box<Expr>, r: Box<Expr>) -> Box<Expr> {
+    Box::new(Expr::Op(l, Opr::Add, r))
 }
 
-pub fn sub (l: Box<Expr>, r: Box<Expr>) -> Box<Expr>
-{
-    Box::new(Expr::Op(l, Opcode::Sub, r))
+pub fn sub(l: Box<Expr>, r: Box<Expr>) -> Box<Expr> {
+    Box::new(Expr::Op(l, Opr::Sub, r))
 }
 
-pub fn num (n: i32) -> Box<Expr>
-{
+pub fn num(n: i32) -> Box<Expr> {
     Box::new(Expr::Num(n))
 }
 
-impl fmt::Display for Expr 
-{
-	fn fmt (&self, f: &mut fmt::Formatter) -> fmt::Result {
-		match self {
-			Expr::Num(n) => write!(f, "{}", n),
-			Expr::Op(l, op, r) => write!(f, "({} {} {})", l, op, r),
-            Expr::Ref(id) => write!(f, "{}", id),
-            Expr::Val(x, id, bd) => write!(f, "val {}={} in {}", x, id, bd)
-		}
-	}
+pub fn val(id: String, v: Box<Expr>, e: Box<Expr>) -> Box<Expr> {
+    Box::new(Expr::Val(id, v, e))
 }
 
-impl fmt::Display for Opcode 
-{
-	fn fmt (&self, f: &mut fmt::Formatter) -> fmt::Result {
-		match self {
-			Opcode::Add => write!(f, "+"),
-			Opcode::Sub => write!(f, "-")
-		}
-	}
+pub fn useid(id: String) -> Box<Expr> {
+    Box::new(Expr::Use(id))
+}
+
+impl fmt::Display for Expr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Expr::Num(n) => write!(f, "{}", n),
+            Expr::Op(l, op, r) => write!(f, "({} {} {})", l, op, r),
+            Expr::Val(x, id, e) => write!(f, "val {}={} in {}", x, id, e),
+            Expr::Use(id) => write!(f, "{}", id),
+        }
+    }
+}
+
+impl fmt::Display for Opr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Opr::Add => write!(f, "+"),
+            Opr::Sub => write!(f, "-"),
+        }
+    }
 }
